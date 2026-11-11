@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- hogwatch app icon: an H whose crossbar is an activity spike.
+       824pt tile on a 1024pt canvas, the standard macOS icon grid. -->
+  <rect x="100" y="100" width="824" height="824" rx="186" fill="#E0312E"/>
+  <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="357.5" y1="316.3" x2="357.5" y2="707.7" stroke-width="103"/>
+    <line x1="666.5" y1="316.3" x2="666.5" y2="707.7" stroke-width="103"/>
+    <polyline points="357.5,512 439.9,512 481.1,409 542.9,615 584.1,512 666.5,512" stroke-width="46"/>
+  </g></svg>
