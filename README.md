@@ -252,7 +252,7 @@ Installed copies compare that tag with their own version once a day and show "Ve
 
 ## Author
 
-Developed by [Louis Cada](https://github.com/louiscada). For questions, bugs or ideas, [open an issue](https://github.com/louiscada/hogwatch/issues). The same link is behind "Contact Developer" in Settings.
+Developed by Louis Cada ([GitHub](https://github.com/louiscada), [LinkedIn](https://www.linkedin.com/in/louis-cada-3943062a2/)). For questions, bugs or ideas, [open an issue](https://github.com/louiscada/hogwatch/issues). The same link is behind "Contact Developer" in Settings.
 
 ## License
 

@@ -63,6 +63,8 @@ final class Settings: ObservableObject {
     /// Where "Contact Developer" leads. Change this one line to use a
     /// different page or a mailto: address.
     static let contactURL = URL(string: "https://github.com/louiscada/hogwatch/issues")!
+    /// The developer's profile, linked from Settings and the About panel.
+    static let profileURL = URL(string: "https://www.linkedin.com/in/louis-cada-3943062a2/")!
 
     // MARK: Tuning constants
 

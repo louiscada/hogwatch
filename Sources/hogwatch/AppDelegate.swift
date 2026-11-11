@@ -571,13 +571,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// The standard Mac About panel.
     @objc private func showAbout() {
         NSApp.activate(ignoringOtherApps: true)
-        let credits = NSAttributedString(
-            string: "Developed by \(Settings.developerName)\nA menu bar app that shows what is slowing your Mac down.",
-            attributes: [
-                .font: NSFont.systemFont(ofSize: NSFont.smallSystemFontSize),
-                .foregroundColor: NSColor.secondaryLabelColor,
-            ]
+        let plain: [NSAttributedString.Key: Any] = [
+            .font: NSFont.systemFont(ofSize: NSFont.smallSystemFontSize),
+            .foregroundColor: NSColor.secondaryLabelColor,
+        ]
+        let credits = NSMutableAttributedString(
+            string: "A menu bar app that shows what is slowing your Mac down.\nDeveloped by ",
+            attributes: plain
         )
+        // The developer's name is a link to their profile.
+        var linked = plain
+        linked[.link] = Settings.profileURL
+        credits.append(NSAttributedString(string: Settings.developerName, attributes: linked))
         NSApp.orderFrontStandardAboutPanel(options: [
             .applicationName: "hogwatch",
             .applicationVersion: Settings.version,

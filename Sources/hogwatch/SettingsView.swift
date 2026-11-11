@@ -117,7 +117,10 @@ struct GeneralSettingsPane: View {
                             .monospacedDigit()
                     }
                     Spacer()
-                    Link("Contact Developer", destination: Settings.contactURL)
+                    VStack(alignment: .trailing, spacing: 6) {
+                        Link("Contact Developer", destination: Settings.contactURL)
+                        Link("LinkedIn", destination: Settings.profileURL)
+                    }
                 }
                 .padding(.vertical, 4)
             }

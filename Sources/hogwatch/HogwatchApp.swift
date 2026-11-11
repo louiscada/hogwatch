@@ -28,6 +28,7 @@ enum HogwatchApp {
 
             Developed by \(Settings.developerName)
             Contact: \(Settings.contactURL.absoluteString)
+            Profile: \(Settings.profileURL.absoluteString)
             """)
             return
         }
