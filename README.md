@@ -12,6 +12,9 @@ A tiny macOS menu bar app that stays out of the way until your Mac is struggling
 
 It answers "what is eating my Mac?" at the moment you need to know, without opening Activity Monitor.
 
+<p align="center"><img src="Resources/screenshot.png" width="760" alt="The hogwatch panel above the Dock, listing five apps with Quit, Force Quit and Restart buttons"></p>
+<p align="center"><sub>The images on this page are illustrations of the app, not photographs of a screen. The app names in them are examples.</sub></p>
+
 ## Features
 
 **Knows when to speak up**
@@ -41,6 +44,32 @@ It answers "what is eating my Mac?" at the moment you need to know, without open
 - Open or close the panel from any app with ⌃⌥H; Escape or a click elsewhere closes it
 - Liquid Glass on macOS 26 Tahoe and macOS 27 Golden Gate, with a classic blurred look on macOS 13 to 15
 - Native Swift, no dependencies, no administrator password
+
+## A closer look
+
+### The four alerts
+
+Whole-Mac CPU, memory pressure, one runaway app, and battery drain. The last two name the app and offer to mute it.
+
+<p align="center"><img src="Resources/screenshots/states.png" width="760" alt="Four hogwatch panels: CPU is running hot, Memory is under pressure, an app is working hard, and an app is draining battery"></p>
+
+### Three ways to show usage
+
+Figures, a bar showing each app's share of the whole Mac, or both. Bars turn orange from a quarter of the Mac and red from half.
+
+<p align="center"><img src="Resources/screenshots/styles.png" width="760" alt="The same panel in Text, Bar and Both display styles"></p>
+
+### The menu bar menu
+
+<p align="center"><img src="Resources/screenshots/menu.png" width="460" alt="The hogwatch menu: Show Top Apps Now, Open Activity Monitor, Pause Alerts, Settings, an update notice, About and Quit"></p>
+
+### Settings
+
+<p align="center"><img src="Resources/screenshots/settings.png" width="760" alt="The General and Alerts tabs of the hogwatch Settings window"></p>
+
+### Welcome
+
+<p align="center"><img src="Resources/screenshots/welcome.png" width="380" alt="The first page of the hogwatch welcome window"></p>
 
 ## Install
 

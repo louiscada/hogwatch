@@ -179,8 +179,8 @@ struct PopupView: View {
         switch model.reason {
         case .cpu: return "CPU is running hot"
         case .memory: return "Memory is under pressure"
-        case .runaway(let name): return "\(name) has been working hard"
-        case .battery(let name): return "\(name) is draining the battery"
+        case .runaway(let name): return "\(name) is working hard"
+        case .battery(let name): return "\(name) is draining battery"
         case .manual: return "Top apps right now"
         }
     }
