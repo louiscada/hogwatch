@@ -572,7 +572,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     @objc private func showAbout() {
         NSApp.activate(ignoringOtherApps: true)
         let credits = NSAttributedString(
-            string: "Developed by \(Settings.developerName)\nFree and open source under the MIT License.",
+            string: "Developed by \(Settings.developerName)\nA menu bar app that shows what is slowing your Mac down.",
             attributes: [
                 .font: NSFont.systemFont(ofSize: NSFont.smallSystemFontSize),
                 .foregroundColor: NSColor.secondaryLabelColor,

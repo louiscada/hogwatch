@@ -59,7 +59,7 @@ final class Settings: ObservableObject {
     static let version = "0.1.0"
 
     /// Shown in Settings, the welcome window and --help.
-    static let developerName = "louiscada"
+    static let developerName = "Louis Cada"
     /// Where "Contact Developer" leads. Change this one line to use a
     /// different page or a mailto: address.
     static let contactURL = URL(string: "https://github.com/louiscada/hogwatch/issues")!
