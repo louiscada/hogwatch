@@ -11,6 +11,9 @@ final class WindowCoordinator: NSObject, NSWindowDelegate {
     private var settingsWindow: NSWindow?
     private var onboardingWindow: NSWindow?
 
+    /// True while the welcome window is open.
+    var isOnboardingVisible: Bool { onboardingWindow != nil }
+
     /// Called when the welcome window's last button is pressed.
     var onOnboardingFinished: () -> Void = {}
 

@@ -190,7 +190,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if cpuAlert || memoryAlert || busyApp != nil {
             calmSamples = 0
             let now = Date()
-            if !isPopupVisible, now >= quietUntil {
+            // No alerts while the welcome is on screen, or before a new user
+            // has finished it: the panel would appear over the tour, ahead
+            // of the "Show Me the Panel" step.
+            let welcoming = !settings.hasOnboarded || windows.isOnboardingVisible
+            if !isPopupVisible, now >= quietUntil, !welcoming {
                 shownManually = false
                 model.alertApp = nil
                 model.alertCount = 0
