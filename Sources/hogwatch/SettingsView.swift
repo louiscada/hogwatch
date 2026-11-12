@@ -5,6 +5,22 @@ import SwiftUI
 struct AlertOptions: View {
     @ObservedObject var settings: Settings
 
+    /// The runaway alert as one menu: 0 is off, anything else is the
+    /// number of cores.
+    private var runawayLevel: Binding<Int> {
+        Binding(
+            get: { settings.runawayAlerts ? settings.runawayCores : 0 },
+            set: { level in
+                if level == 0 {
+                    settings.runawayAlerts = false
+                } else {
+                    settings.runawayCores = level
+                    settings.runawayAlerts = true
+                }
+            }
+        )
+    }
+
     var body: some View {
         Picker(selection: $settings.cpuThreshold) {
             ForEach(Settings.thresholdChoices, id: \.self) { value in
@@ -24,10 +40,15 @@ struct AlertOptions: View {
             )
         }
 
-        Toggle(isOn: $settings.runawayAlerts) {
+        Picker(selection: runawayLevel) {
+            Text("Off").tag(0)
+            ForEach(Settings.runawayCoreChoices, id: \.self) { cores in
+                Text(Settings.coreLabel(cores)).tag(cores)
+            }
+        } label: {
             OptionLabel(
                 title: "Runaway app",
-                detail: "When one app keeps a full processor core busy for a minute"
+                detail: "When one app keeps this many processor cores busy for a minute"
             )
         }
 

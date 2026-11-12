@@ -89,6 +89,8 @@ struct PopupView: View {
                         .foregroundStyle(.secondary)
                         .monospacedDigit()
                         .lineLimit(1)
+                        .minimumScaleFactor(0.85)
+                        .help(subtitleHelp)
 
                     // Memory pressure is shown as a mark, not as words: the
                     // words did not fit beside the graph.
@@ -185,10 +187,38 @@ struct PopupView: View {
         }
     }
 
+    /// Whole-Mac totals, or, when the alert is about one app, the rule
+    /// that app crossed. The rows show a share of the whole Mac, so the
+    /// rule is put the same way: 2 of 10 cores reads as about 20% below.
     private var subtitle: String {
+        switch model.reason {
+        case .runaway:
+            return "Using \(settings.runawayCores) of \(Settings.coreCount) cores for a minute"
+        case .battery:
+            return "Half a core for a minute, on battery"
+        case .cpu, .memory, .manual:
+            let cpu = Int(model.system.cpuPercent.rounded())
+            let memory = Int(model.system.memoryPercent.rounded())
+            return "CPU \(cpu)%  ·  Memory \(memory)%"
+        }
+    }
+
+    /// The longer version, shown when the pointer rests on the subtitle.
+    private var subtitleHelp: String {
         let cpu = Int(model.system.cpuPercent.rounded())
         let memory = Int(model.system.memoryPercent.rounded())
-        return "CPU \(cpu)%  ·  Memory \(memory)%"
+        let totals = "The Mac as a whole: CPU \(cpu)%, memory \(memory)%."
+        switch model.reason {
+        case .runaway(let name):
+            let share = Int((Double(settings.runawayCores) / Double(Settings.coreCount) * 100).rounded())
+            return "\(name) has kept at least \(Settings.coreLabel(settings.runawayCores)) busy for over a minute. "
+                + "This Mac has \(Settings.coreCount) cores, so that is about \(share)% in the list. "
+                + "Change the level in Settings, under Alerts. \(totals)"
+        case .battery(let name):
+            return "\(name) has kept at least half a core busy for over a minute while on battery. \(totals)"
+        case .cpu, .memory, .manual:
+            return "CPU and memory in use across the whole Mac"
+        }
     }
 
     private var symbolName: String {

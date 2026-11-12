@@ -21,7 +21,7 @@ It answers "what is eating my Mac?" at the moment you need to know, without open
 
 - Whole-Mac CPU staying above a level you choose
 - Memory pressure, the same signal behind Activity Monitor's pressure graph, not just "percent used"
-- A single runaway app holding a full processor core for a minute, even when the Mac as a whole is calm
+- A single runaway app keeping two processor cores busy for a minute (or one, or four: you choose), even when the Mac as a whole is calm
 - On battery, an app that keeps the processor busy and drains it
 
 **Shows who is responsible**
@@ -113,7 +113,7 @@ CPU figures are a share of the whole Mac, so the rows add up to the total in the
 | --- | --- |
 | CPU is running hot | Whole-Mac CPU above your threshold (85% by default) for about 6 seconds |
 | Memory is under pressure | macOS reports memory pressure of warning or critical for about 4 seconds |
-| An app has been working hard | One app using a full core or more for 60 seconds |
+| An app is working hard | One app using two cores or more for 60 seconds (adjustable: 1, 2 or 4 cores, or off) |
 | An app is draining the battery | On battery, one app using half a core or more for 60 seconds |
 
 Muted apps never trigger the two per-app alerts, and the CPU alert stays quiet while muted apps account for more than half of the load.
@@ -138,7 +138,8 @@ Muted apps never trigger the two per-app alerts, and the CPU alert stays quiet w
 | General | Check for updates | On |
 | General | Menu bar shows the icon only, or the icon with CPU or memory | Icon only |
 | Alerts | CPU level that counts as a busy Mac | 85% |
-| Alerts | Memory pressure, runaway app and battery drain alerts | On |
+| Alerts | Memory pressure and battery drain alerts | On |
+| Alerts | Runaway app level: off, 1, 2 or 4 cores | 2 cores |
 | Alerts | Muted apps | None |
 | Panel | Show usage as text, a bar, or both | Text |
 | Panel | Position: left, centre or right | Centre |

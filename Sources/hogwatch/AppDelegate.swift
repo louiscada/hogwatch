@@ -157,7 +157,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             // A single app that has been busy for a full minute.
             let busyLimit: Double? = batteryMode
                 ? Settings.batteryCPU
-                : (settings.runawayAlerts ? Settings.runawayCPU : nil)
+                : (settings.runawayAlerts ? settings.runawayCPU : nil)
             if let busyLimit = busyLimit {
                 busyApp = longRunningBusyApp(in: apps, limit: busyLimit, ignoring: ignored)
             } else {
@@ -208,7 +208,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                     history.record(kind: "memory", app: topApp(in: apps, by: .memory))
                 } else if let app = busyApp {
                     let draining = batteryMode
-                        && (app.cpuPercent < Settings.runawayCPU || !settings.runawayAlerts)
+                        && (app.cpuPercent < settings.runawayCPU || !settings.runawayAlerts)
                     model.reason = draining ? .battery(app.name) : .runaway(app.name)
                     model.sortKey = .cpu
                     history.record(kind: draining ? "battery" : "runaway", app: app.name)

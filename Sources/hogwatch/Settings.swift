@@ -81,13 +81,31 @@ final class Settings: ObservableObject {
     /// Memory pressure must stay elevated for this many samples in a row.
     static let memorySustainSamples = 2
 
-    /// A single app using at least this much CPU (100 = one full core)…
-    static let runawayCPU = 100.0
-    /// …or this much while on battery…
+    /// Processor cores in this Mac.
+    static let coreCount = max(1, ProcessInfo.processInfo.activeProcessorCount)
+
+    /// Levels offered for the runaway app alert, in whole cores. A level
+    /// that needs every core in the Mac is left out: the whole-Mac alert
+    /// already covers that.
+    static let runawayCoreChoices: [Int] = {
+        let fitting = [1, 2, 4].filter { $0 < coreCount }
+        return fitting.isEmpty ? [1] : fitting
+    }()
+    /// Two cores keeps ordinary browsing quiet. Macs with very few cores
+    /// start at one.
+    static let defaultRunawayCores = coreCount >= 4 ? 2 : 1
+
+    /// On battery, a single app using at least this much CPU
+    /// (100 = one full core)…
     static let batteryCPU = 50.0
-    /// …for this long is flagged on its own,
-    /// even when the machine as a whole is not busy.
+    /// …for this long is flagged on its own, even when the machine as a
+    /// whole is not busy. The runaway app alert uses the same window.
     static let runawaySeconds: TimeInterval = 60
+
+    /// "1 core", "2 cores".
+    static func coreLabel(_ cores: Int) -> String {
+        cores == 1 ? "1 core" : "\(cores) cores"
+    }
 
     /// While the Mac is calm and the panel is closed, the per-process sample
     /// (the costly part) runs only on every this-many ticks. The cheap
@@ -115,10 +133,16 @@ final class Settings: ObservableObject {
     @Published var memoryAlerts: Bool {
         didSet { defaults.set(memoryAlerts, forKey: Key.memoryAlerts) }
     }
-    /// Alert when one app holds a full core for a minute.
+    /// Alert when one app keeps `runawayCores` cores busy for a minute.
     @Published var runawayAlerts: Bool {
         didSet { defaults.set(runawayAlerts, forKey: Key.runawayAlerts) }
     }
+    /// How many whole cores one app must keep busy to count as a runaway.
+    @Published var runawayCores: Int {
+        didSet { defaults.set(runawayCores, forKey: Key.runawayCores) }
+    }
+    /// The runaway level on the scale the sampler uses (100 = one full core).
+    var runawayCPU: Double { Double(runawayCores) * 100 }
     /// On battery, alert when one app holds half a core for a minute.
     @Published var batteryAlerts: Bool {
         didSet { defaults.set(batteryAlerts, forKey: Key.batteryAlerts) }
@@ -165,6 +189,7 @@ final class Settings: ObservableObject {
         static let cpuThreshold = "cpuThreshold"
         static let memoryAlerts = "memoryAlerts"
         static let runawayAlerts = "runawayAlerts"
+        static let runawayCores = "runawayCores"
         static let batteryAlerts = "batteryAlerts"
         static let snoozeMinutes = "snoozeMinutes"
         static let hasOnboarded = "hasOnboarded"
@@ -187,10 +212,13 @@ final class Settings: ObservableObject {
         }
         let cpu = defaults.integer(forKey: Key.cpuThreshold)
         let snooze = defaults.integer(forKey: Key.snoozeMinutes)
+        let cores = defaults.integer(forKey: Key.runawayCores)
 
         cpuThreshold = Settings.thresholdChoices.contains(cpu) ? cpu : 85
         memoryAlerts = bool(Key.memoryAlerts, fallback: true)
         runawayAlerts = bool(Key.runawayAlerts, fallback: true)
+        runawayCores = Settings.runawayCoreChoices.contains(cores)
+            ? cores : Settings.defaultRunawayCores
         batteryAlerts = bool(Key.batteryAlerts, fallback: true)
         snoozeMinutes = Settings.snoozeChoices.contains(snooze) ? snooze : 5
         usageStyle = UsageStyle(rawValue: defaults.string(forKey: Key.usageStyle) ?? "") ?? .text
