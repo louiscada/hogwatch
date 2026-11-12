@@ -265,9 +265,9 @@ private struct AppRow: View {
         .padding(.horizontal, -12)
         .contentShape(Rectangle())
         .onHover { hovering = $0 }
-        .contextMenu {
+        .overlay {
             if app.kind == .app {
-                Button(ignoreTitle) {
+                RightClickMenu(title: ignoreTitle) {
                     model.onToggleIgnore(app)
                 }
             }
@@ -369,6 +369,67 @@ private struct AppRow: View {
         case .cpu: return "\(cpu)  ·  \(memory)"
         case .memory: return "\(memory)  ·  \(cpu)"
         }
+    }
+}
+
+/// A right-click (or Control-click) menu for a row.
+///
+/// SwiftUI's own `.contextMenu` does not open in this panel, because the
+/// panel never becomes the active window. This asks AppKit to show the menu
+/// directly, which works in any window.
+private struct RightClickMenu: NSViewRepresentable {
+    let title: String
+    let action: () -> Void
+
+    func makeNSView(context: Context) -> RightClickView {
+        let view = RightClickView()
+        view.title = title
+        view.action = action
+        return view
+    }
+
+    func updateNSView(_ view: RightClickView, context: Context) {
+        view.title = title
+        view.action = action
+    }
+}
+
+final class RightClickView: NSView {
+    var title = ""
+    var action: () -> Void = {}
+
+    /// Only context clicks land on this view. Everything else (ordinary
+    /// clicks on the row's button, hovering) passes straight through.
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        guard let event = NSApp.currentEvent else { return nil }
+        let controlClick = event.type == .leftMouseDown && event.modifierFlags.contains(.control)
+        guard event.type == .rightMouseDown || controlClick else { return nil }
+        return super.hitTest(point)
+    }
+
+    override func rightMouseDown(with event: NSEvent) {
+        showMenu(for: event)
+    }
+
+    override func mouseDown(with event: NSEvent) {
+        if event.modifierFlags.contains(.control) {
+            showMenu(for: event)
+        } else {
+            super.mouseDown(with: event)
+        }
+    }
+
+    private func showMenu(for event: NSEvent) {
+        let menu = NSMenu()
+        let item = NSMenuItem(title: title, action: #selector(choose), keyEquivalent: "")
+        item.target = self
+        item.image = NSImage(systemSymbolName: "bell.slash", accessibilityDescription: nil)
+        menu.addItem(item)
+        NSMenu.popUpContextMenu(menu, with: event, for: self)
+    }
+
+    @objc private func choose() {
+        action()
     }
 }
 
